@@ -20,7 +20,7 @@ int main()
     sf::Sprite playButton(play);
     sf::Sprite menuButton(Menu);
     sf::Sprite exitButton(exit);
-    //test
+    
     //std::string placedBuilding = "";
 
     playButton.setPosition({ 300, 400 });
