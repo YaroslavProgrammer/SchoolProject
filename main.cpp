@@ -9,8 +9,8 @@ int main()
     //Определяю вид для камеры игрока
     sf::View camera({ 640.f, 360.f }, { 1280.f, 720.f });
     
-    sf::Font font("OpenSans.ttf");
-    sf::Text text(font);
+    //sf::Font font("OpenSans.ttf");
+    //sf::Text text(font);
 
     sf::Texture play("play.png");
     sf::Texture Menu("menu.png");
@@ -20,8 +20,8 @@ int main()
     sf::Sprite playButton(play);
     sf::Sprite menuButton(Menu);
     sf::Sprite exitButton(exit);
-    
-    std::string placedBuilding = "";
+    //test
+    //std::string placedBuilding = "";
 
     playButton.setPosition({ 300, 400 });
     menuButton.setPosition({ 1080, 0 });
