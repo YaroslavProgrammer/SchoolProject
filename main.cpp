@@ -68,11 +68,12 @@ int main()
                             sf::Vector2f newPos(tileIndexX * 200, tileIndexY * 200);
                             buildPos.push_back(newPos);
                             
+                            /*
                             for (int i = 0; i < buildPos.size(); i++) {
                                 std::cout << buildPos[i].y;
                             }
                             std::cout << '\n'; //- код для дебаггинга
-                            
+                            */
                         }
                     }
                 }
