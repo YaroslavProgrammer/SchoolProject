@@ -8,9 +8,9 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     //Определяю вид для камеры игрока
-    sf::View camera({ 640.f, 360.f }, { 1280.f, 720.f });
-    sf::View mapView({ 3200.f, 1800.f }, { 6400.f, 3600.f });
-    
+    sf::View camera({ 3000.f, 1800.f }, { 1280.f, 720.f });
+    sf::View mapView({ 3000.f, 1800.f }, { 6000.f, 3600.f });
+    sf::View build({ 0.f, 0.f }, { 1280.f, 720.f });
     std::vector<sf::Vector2f> buildPos = {}; //список со всеми разм зданиями
 
 
@@ -31,7 +31,7 @@ int main()
     playButton.setPosition({ 300, 400 });
     menuButton.setPosition({ 1180, 0 });
     exitButton.setPosition({ 780, 400 });
-    WorldMap.setPosition({ -2360, -1440 });
+    WorldMap.setPosition({ 0, 0 });
     
     enum windowStates {
         menu,
@@ -43,6 +43,9 @@ int main()
         sf::Vector2i MousePosition = sf::Mouse::getPosition(window);
         float MousePositionX = MousePosition.x;
         float MousePositionY = MousePosition.y;
+        sf::Vector2f MapMousePosition = window.mapPixelToCoords(MousePosition, camera);
+        float MapMousePositionX = MapMousePosition.x;
+        float MapMousePositionY = MapMousePosition.y;
         while (const std::optional event = window.pollEvent())
         {
             //Когда открыто меню
@@ -59,21 +62,18 @@ int main()
             if (state == game){
                 if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>()) {
                     if (mouseButtonPressed->button == sf::Mouse::Button::Left) {
-                        sf::Vector2f MapMousePosition = window.mapPixelToCoords(MousePosition, mapView);
-                        int MapMousePositionX = MapMousePosition.x;
-                        int MapMousePositionY = MapMousePosition.y;
+                        
                         int tileIndexX = MapMousePositionX / 200;
                         int tileIndexY = MapMousePositionY / 200;
-                        if (tileIndexX > 6 && tileIndexX < 24) {
+                        if (tileIndexX >= 6 && tileIndexX <= 24) {
                             sf::Vector2f newPos(tileIndexX * 200, tileIndexY * 200);
                             buildPos.push_back(newPos);
                             
-                            /*
                             for (int i = 0; i < buildPos.size(); i++) {
-                                std::cout << buildPos[i].y;
+                                std::cout << buildPos[i].x;
                             }
                             std::cout << '\n'; //- код для дебаггинга
-                            */
+                            
                         }
                     }
                 }
@@ -83,9 +83,11 @@ int main()
                 if (const auto* mouseWheel = event->getIf<sf::Event::MouseWheelScrolled>()) {
                     if (mouseWheel->delta > 0 && camera.getSize().x > 800) {
                         camera.zoom(0.95f);
+                        build.zoom(0.95f);
                     }
                     else if (mouseWheel->delta < 0 && camera.getSize().x < 6000) {
                         camera.zoom(1.1f);
+                        build.zoom(1.1f);
                     }
                 }
                 if (camera.getSize().x >= 6000) camera.setSize({ 6000, 3600 });
@@ -102,11 +104,34 @@ int main()
             window.clear();
             window.setView(camera);
             window.draw(WorldMap);
+            
+            /*
+            for (int i = 6; i <= 24; i++) {
+                //SolarPanel.setPosition(buildPos[i]);
+                // /*
+                for (int j = 0; j <= 18; j++) {
+                    SolarPanel.setPosition({ i*200.f, j*200.f });
+                    /*
+                    sf::RectangleShape test({ 100.f, 100.f });
+                    test.setPosition({ 0.f, 0.f });
+                    
+                    //SolarPanel.setPosition({ 0, 0 });
+                    window.draw(SolarPanel);
+                }
+            }
+            */
+
             for (int i = 0; i < buildPos.size(); i++) {
                 SolarPanel.setPosition(buildPos[i]);
+                SolarPanel.move({ -30, -20 });
                 window.draw(SolarPanel);
-            }
 
+                /*
+                sf::CircleShape test({100.f});
+                test.setPosition({ MapMousePositionX, MapMousePositionY });
+                window.draw(test);
+                */ //для деббагинга кружок чтобы показать где мышь реально находится
+            }
             window.setView(window.getDefaultView());
             window.draw(menuButton);
             window.display();
