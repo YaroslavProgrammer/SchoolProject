@@ -9,8 +9,6 @@ int main()
 
     //Определяю вид для камеры игрока
     sf::View camera({ 3000.f, 1800.f }, { 1280.f, 720.f });
-    sf::View mapView({ 3000.f, 1800.f }, { 6000.f, 3600.f });
-    sf::View build({ 0.f, 0.f }, { 1280.f, 720.f });
     std::vector<sf::Vector2f> buildPos = {}; //список со всеми разм зданиями
 
 
@@ -83,11 +81,9 @@ int main()
                 if (const auto* mouseWheel = event->getIf<sf::Event::MouseWheelScrolled>()) {
                     if (mouseWheel->delta > 0 && camera.getSize().x > 800) {
                         camera.zoom(0.95f);
-                        build.zoom(0.95f);
                     }
                     else if (mouseWheel->delta < 0 && camera.getSize().x < 6000) {
                         camera.zoom(1.1f);
-                        build.zoom(1.1f);
                     }
                 }
                 if (camera.getSize().x >= 6000) camera.setSize({ 6000, 3600 });
@@ -105,21 +101,6 @@ int main()
             window.setView(camera);
             window.draw(WorldMap);
             
-            /*
-            for (int i = 6; i <= 24; i++) {
-                //SolarPanel.setPosition(buildPos[i]);
-                // /*
-                for (int j = 0; j <= 18; j++) {
-                    SolarPanel.setPosition({ i*200.f, j*200.f });
-                    /*
-                    sf::RectangleShape test({ 100.f, 100.f });
-                    test.setPosition({ 0.f, 0.f });
-                    
-                    //SolarPanel.setPosition({ 0, 0 });
-                    window.draw(SolarPanel);
-                }
-            }
-            */
 
             for (int i = 0; i < buildPos.size(); i++) {
                 SolarPanel.setPosition(buildPos[i]);
